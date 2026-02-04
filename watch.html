@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Watch Movie</title>
+  <!-- Minimal theme -->
+  <script type="module" src="https://cdn.jsdelivr.net/npm/player.style/minimal/+esm"></script>
+  <style>
+    body { font-family: Arial, sans-serif; background: #111; color: #eee; margin: 0; text-align: center; }
+    h1 { margin: 20px; }
+    media-theme-minimal { display: block; margin: 0 auto; max-width: 900px; }
+  </style>
+</head>
+<body>
+  <h1 id="movieTitle"></h1>
+
+  <media-theme-minimal style="width:100%">
+    <video id="moviePlayer"
+      slot="media"
+      playsinline
+      crossorigin="anonymous">
+    </video>
+  </media-theme-minimal>
+
+  <script>
+    async function loadMovie() {
+      const params = new URLSearchParams(window.location.search);
+      const slug = params.get("id");
+
+      const response = await fetch("movies.json");
+      const movies = await response.json();
+      const movie = movies.find(m => m.id === slug);
+
+      if (!movie) {
+        document.getElementById("movieTitle").innerText = "Movie not found";
+        return;
+      }
+
+      document.getElementById("movieTitle").innerText = movie.title;
+      const video = document.getElementById("moviePlayer");
+      video.setAttribute("src", movie.hls || movie.mp4);
+    }
+
+    loadMovie();
+  </script>
+</body>
+</html>
