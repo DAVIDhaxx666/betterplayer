@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Movie Grid</title>
+  <style>
+    body { font-family: Arial; background: #111; color: #eee; margin: 0; }
+    h1 { text-align: center; padding: 20px; }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 20px;
+      padding: 20px;
+    }
+    .movie { text-align: center; cursor: pointer; }
+    .movie img { width: 100%; border-radius: 8px; transition: transform 0.2s; }
+    .movie img:hover { transform: scale(1.05); }
+    .movie p { margin-top: 10px; font-size: 16px; }
+  </style>
+</head>
+<body>
+  <h1>Choose a Movie</h1>
+  <div class="grid" id="movieGrid"></div>
+
+  <script>
+    async function loadMovies() {
+      const response = await fetch("movies.json");
+      const movies = await response.json();
+      const grid = document.getElementById("movieGrid");
+
+      movies.forEach(movie => {
+        const div = document.createElement("div");
+        div.className = "movie";
+        div.innerHTML = `
+          <a href="watch.html?id=${movie.id}">
+            <img src="${movie.poster}" alt="${movie.title}">
+            <p>${movie.title}</p>
+          </a>
+        `;
+        grid.appendChild(div);
+      });
+    }
+
+    loadMovies();
+  </script>
+</body>
+</html>
