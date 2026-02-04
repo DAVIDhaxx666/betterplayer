@@ -3,6 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <title>Watch Movie</title>
+  <!-- HLS video element -->
+  <script type="module" src="https://cdn.jsdelivr.net/npm/hls-video-element/+esm"></script>
   <!-- Minimal theme -->
   <script type="module" src="https://cdn.jsdelivr.net/npm/player.style/minimal/+esm"></script>
   <style>
@@ -15,11 +17,11 @@
   <h1 id="movieTitle"></h1>
 
   <media-theme-minimal style="width:100%">
-    <video id="moviePlayer"
+    <hls-video id="moviePlayer"
       slot="media"
       playsinline
       crossorigin="anonymous">
-    </video>
+    </hls-video>
   </media-theme-minimal>
 
   <script>
@@ -38,7 +40,7 @@
 
       document.getElementById("movieTitle").innerText = movie.title;
       const video = document.getElementById("moviePlayer");
-      video.setAttribute("src", movie.hls || movie.mp4);
+      video.setAttribute("src", movie.hls);
     }
 
     loadMovie();
